@@ -1,33 +1,34 @@
-package trainingData
+package trainingdata
 
 import (
-    "io/ioutil"
+	"fmt"
+	"io/ioutil"
 )
 
 type TrainingData struct {
-
-    FileName    string
-    data_file        []byte
-
+	FileName string
+	datafile []byte
 }
 
 func New(fileName string) TrainingData {
-    //constructor for this "class" 
+	//constructor for this "class"
 
-    t := TrainingData{fileName,nil}
+	t := TrainingData{fileName, nil}
 
-    return t
+	return t
 }
 
-func(t TrainingData) OpenFile(){
+func (t TrainingData) OpenFile() {
 
-    if len(t.Filename) < 0 {
-        panic("Filename are not set to anything")
-    }
-    data_file, err := ioutil.ReadFile(t.Filename)
-    if err != nil {
-        panic(err)
-    }
+	if len(t.FileName) < 0 {
+		panic("Filename are not set to anything")
+	}
+	datafile, err := ioutil.ReadFile(t.FileName)
+	if err != nil {
+		panic(err)
+	} else {
+		fmt.Println("All good")
+	}
 
-    t.data_file = data_file
+	t.datafile = datafile
 }
