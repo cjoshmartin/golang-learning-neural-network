@@ -45,4 +45,5 @@ func main() {
     test:= "Hello tester, we be testing all day\n"
     fmt.Println(test)
     genrateData(file_name)
+
 }
