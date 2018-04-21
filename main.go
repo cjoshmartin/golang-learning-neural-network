@@ -6,10 +6,9 @@ import (
 	"io/ioutil"
 	"math/rand"
 
-	_ "./TrainingData"
-	trainingdata "github.com/cjoshmartin/golang-learning-neural-network/TrainingData"
+	"./trainingdata"
 )
-
+// makes random test values for test the network
 func showVectorVals(label string, v []float64) {
 
 	fmt.Printf("%s ", label)
@@ -18,7 +17,7 @@ func showVectorVals(label string, v []float64) {
 	}
 	fmt.Printf("\n")
 }
-
+// makes a text file to test with
 func genrateData(storepath string) {
 	var buffer bytes.Buffer
 
@@ -41,13 +40,10 @@ func genrateData(storepath string) {
 
 func main() {
 	filename := "sample_data.txt"
-
-	test := "Hello tester, we be testing all day\n"
-	fmt.Println(test)
+	var topology []uint64
 	genrateData(filename)
 
 	datarunner := trainingdata.New(filename)
 	datarunner.OpenFile()
-	fmt.Println(datarunner)
-
+	datarunner.GetTopology(topology)
 }
