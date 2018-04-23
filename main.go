@@ -48,5 +48,6 @@ func main() {
 	datarunner.OpenFile()
 	datarunner.GetTopology(&topology)
 
-	neuralnetwork := network.New(&topology)
+	neuralnetwork := network.New(topology)
+	fmt.Println(neuralnetwork)
 }
