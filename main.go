@@ -7,6 +7,7 @@ import (
 	"math/rand"
 
 	"./trainingdata"
+	"./network"
 )
 // makes random test values for test the network
 func showVectorVals(label string, v []float64) {
@@ -45,5 +46,7 @@ func main() {
 
 	datarunner := trainingdata.New(filename)
 	datarunner.OpenFile()
-	datarunner.GetTopology(topology)
+	datarunner.GetTopology(&topology)
+
+	neuralnetwork := network.New(&topology)
 }
