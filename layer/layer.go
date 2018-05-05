@@ -1,11 +1,7 @@
 package layer
 
-type Layer struct {
+import (
+	"../neuron"
+)
 
-}
-
-
-func New() Layer{
-//TODO
-	return Layer{}
-}
+type Layer []neuron.Neuron // our Layer for the Nerual Network
