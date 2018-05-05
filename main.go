@@ -6,9 +6,10 @@ import (
 	"io/ioutil"
 	"math/rand"
 
-	"./trainingdata"
 	"./network"
+	"./trainingdata"
 )
+
 // makes random test values for test the network
 func showVectorVals(label string, v []float64) {
 
@@ -18,6 +19,7 @@ func showVectorVals(label string, v []float64) {
 	}
 	fmt.Printf("\n")
 }
+
 // makes a text file to test with
 func genrateData(storepath string) {
 	var buffer bytes.Buffer
@@ -48,6 +50,13 @@ func main() {
 	datarunner.OpenFile()
 	datarunner.GetTopology(&topology)
 
-	neuralnetwork := network.New(topology)
+	conditions := network.InitalConditons{
+		0.05,
+		0.05,
+		1000,
+		.005,
+		network.NeuronSettings{4, 7, 3},
+	}
+	neuralnetwork := network.New(conditions, topology)
 	fmt.Println(neuralnetwork)
 }

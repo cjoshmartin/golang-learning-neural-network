@@ -1,31 +1,38 @@
 package network
 
-import (
-	"../layer"
-)
-
-type Network struct {
-	layers                       []layer.Layer
-	error                        float64
-	recentAverageError           float64
-	recentAverageSmoothingFactor float64
+type Neuron struct {
+	outputValue   float64
+	outputWeights []float64
+	outputDeltas  []float64
+}
+type NeuronSettings struct {
+	NumInputNeurons  uint64
+	NumHiddenNeurons uint64
+	NumOutputNeurons uint64
+}
+type InitalConditons struct {
+	LearningRate float64
+	Momentum     float64
+	MaxEpochs    float64
+	MaxError     float64
+	NeuronOpt    NeuronSettings
 }
 
-func New(topology []uint64) Network {
-	var _layers []layer.Layer // Layer[] -> Neuron[] <==> _layer[][]
-	_numLayers := len(topology)
-	_currLayerSize := 0
-	for layerNum := 0; layerNum < _numLayers; layerNum++ {
-		_layers = append(_layers, layer.Layer)
-		_currLayerSize++
+type Network struct {
+	inputLayer   []Neuron // where the inputs of our network go
+	hiddenLayer  []Neuron // The hidden layers' job is to transform the inputs into something that the output layer can use.
+	outputLayer  []Neuron // outs of our network
+	trainingData []uint64 // data to train over
+}
 
-		numOutputs := topology[layerNum+1]
-		if layerNum == (len(topology) - 1) {
-			numOutputs = 0
-		}
+func New(setter InitalConditons, data []uint64) Network {
+	var newNetwork Network
+	// making the layers
+	newNetwork.inputLayer = make([]Neuron, setter.NeuronOpt.NumInputNeurons+1)
+	newNetwork.hiddenLayer = make([]Neuron, setter.NeuronOpt.NumHiddenNeurons+1)
+	newNetwork.outputLayer = make([]Neuron, setter.NeuronOpt.NumOutputNeurons+1)
 
-		currLayer := _layers[len(_layers)-1]
-		currLayer[len(currLayer)-1].SetOutputVal(1.0)
-	}
-	return Network{_layers, 0.0, 0.0, 100.0}
+	// sending the data as trainingData
+	newNetwork.trainingData = data
+	return newNetwork
 }
