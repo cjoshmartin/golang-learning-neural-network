@@ -1,5 +1,7 @@
 package network
 
+import "math/rand"
+
 type Neuron struct {
 	outputValue   float64
 	outputWeights []float64
@@ -25,10 +27,36 @@ type Network struct {
 	trainingData []uint64 // data to train over
 }
 
+func inptLayer(settings NeuronSettings) []Neuron {
+	var inputLayer []Neuron
+
+	inputLayer = make([]Neuron, settings.NumInputNeurons+1)
+	for i := range inputLayer {
+
+		inputLayer[i].outputWeights = make([]float64, settings.NumHiddenNeurons+1)
+
+		for j := range inputLayer[i].outputWeights {
+			inputLayer[i].outputWeights[j] = rand.Float64()*(0.01-0.001) + 0.001
+		} // end of outputWeights for loop
+
+		inputLayer[i].outputDeltas = make([]float64, settings.NumHiddenNeurons)
+
+		// setting bias neuron's output
+		if i == 0 {
+			inputLayer[i].outputValue = 1.0
+		} else {
+			//else setting output to 0
+			inputLayer[i].outputValue = 0.0
+		} // end of if's for setting bais
+
+	} // end of inputLayer init foor loop
+	return inputLayer
+}
+
 func New(setter InitalConditons, data []uint64) Network {
 	var newNetwork Network
 	// making the layers
-	newNetwork.inputLayer = make([]Neuron, setter.NeuronOpt.NumInputNeurons+1)
+	newNetwork.inputLayer = inptLayer(setter.NeuronOpt)
 	newNetwork.hiddenLayer = make([]Neuron, setter.NeuronOpt.NumHiddenNeurons+1)
 	newNetwork.outputLayer = make([]Neuron, setter.NeuronOpt.NumOutputNeurons+1)
 
