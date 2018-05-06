@@ -27,40 +27,53 @@ type Network struct {
 	trainingData []uint64 // data to train over
 }
 
-func inptLayer(settings NeuronSettings) []Neuron {
-	var inputLayer []Neuron
+func layerCreate(size uint64) []Neuron {
+	var Layer []Neuron
 
-	inputLayer = make([]Neuron, settings.NumInputNeurons+1)
-	for i := range inputLayer {
+	Layer = make([]Neuron, size+1)
+	for i := range Layer {
 
-		inputLayer[i].outputWeights = make([]float64, settings.NumHiddenNeurons+1)
+		Layer[i].outputWeights = make([]float64, size+1)
 
-		for j := range inputLayer[i].outputWeights {
-			inputLayer[i].outputWeights[j] = rand.Float64()*(0.01-0.001) + 0.001
+		for j := range Layer[i].outputWeights {
+			Layer[i].outputWeights[j] = rand.Float64()*(0.01-0.001) + 0.001
 		} // end of outputWeights for loop
 
-		inputLayer[i].outputDeltas = make([]float64, settings.NumHiddenNeurons)
+		Layer[i].outputDeltas = make([]float64, size)
 
 		// setting bias neuron's output
 		if i == 0 {
-			inputLayer[i].outputValue = 1.0
+			Layer[i].outputValue = 1.0
 		} else {
 			//else setting output to 0
-			inputLayer[i].outputValue = 0.0
+			Layer[i].outputValue = 0.0
 		} // end of if's for setting bais
 
 	} // end of inputLayer init foor loop
-	return inputLayer
+	return Layer
 }
 
 func New(setter InitalConditons, data []uint64) Network {
 	var newNetwork Network
 	// making the layers
-	newNetwork.inputLayer = inptLayer(setter.NeuronOpt)
-	newNetwork.hiddenLayer = make([]Neuron, setter.NeuronOpt.NumHiddenNeurons+1)
+	newNetwork.inputLayer = layerCreate(setter.NeuronOpt.NumHiddenNeurons)
+	newNetwork.hiddenLayer = layerCreate(setter.NeuronOpt.NumOutputNeurons)
 	newNetwork.outputLayer = make([]Neuron, setter.NeuronOpt.NumOutputNeurons+1)
 
+	// Output layer has no outgoing weights
+	for i := range newNetwork.outputLayer {
+		newNetwork.outputLayer[i].outputValue = 0
+		newNetwork.outputLayer[i].outputWeights = nil
+		newNetwork.outputLayer[i].outputDeltas = nil
+	}
 	// sending the data as trainingData
 	newNetwork.trainingData = data
 	return newNetwork
+}
+
+func (network *Network) Train(settings InitalConditons) int {
+	// TODO
+	var epoch int
+
+	return epoch
 }

@@ -2,8 +2,10 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"math/rand"
 
 	"./network"
@@ -58,5 +60,9 @@ func main() {
 		network.NeuronSettings{4, 7, 3},
 	}
 	neuralnetwork := network.New(conditions, topology)
-	fmt.Println(neuralnetwork)
+	b, err := json.Marshal(neuralnetwork)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(b)
 }
