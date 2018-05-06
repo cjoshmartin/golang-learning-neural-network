@@ -1,6 +1,4 @@
 # Neural Networks 
-## In Golang
-
 This is my try at creating a neural network in Golang.
 
 
