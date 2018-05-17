@@ -15,7 +15,7 @@ type NeuronSettings struct {
 type InitalConditons struct {
 	LearningRate float64
 	Momentum     float64
-	MaxEpochs    float64
+	MaxEpochs    int
 	MaxError     float64
 	NeuronOpt    NeuronSettings
 }
@@ -25,6 +25,14 @@ type Network struct {
 	hiddenLayer  []Neuron // The hidden layers' job is to transform the inputs into something that the output layer can use.
 	outputLayer  []Neuron // outs of our network
 	trainingData []uint64 // data to train over
+}
+
+func initIndices(length int) []int {
+	indices := make([]int, length)
+	for i := range indices {
+		indices[i] = i
+	}
+	return indices
 }
 
 func layerCreate(size uint64) []Neuron {
@@ -52,6 +60,22 @@ func layerCreate(size uint64) []Neuron {
 	} // end of inputLayer init foor loop
 	return Layer
 }
+func (network *Network) globalError(data []uint64, settings InitalConditons) float64 {
+	var totalError float64
+
+	for i := range data {
+		trainData := data[i][:settings.NeuronOpt.NumInputNeurons] // Change to accomodate different data-length
+		targetData := data[i][settings.NeuronOpt.NumInputNeurons:]
+		network.feedForward(trainData) //todo
+
+		for j := range network.outputLayer {
+			diff := targetData[j] - network.outputLayer[j].outputValue
+			totalError += diff * diff
+		}
+	}
+
+	return totalError / float64((len(network.outputLayer) * len(data)))
+}
 
 func New(setter InitalConditons, data []uint64) Network {
 	var newNetwork Network
@@ -72,8 +96,19 @@ func New(setter InitalConditons, data []uint64) Network {
 }
 
 func (network *Network) Train(settings InitalConditons) int {
-	// TODO
+
+	indices := initIndices(len(network.trainingData))
+
 	var epoch int
+	for epoch = 0; epoch < settings.MaxEpochs; epoch++ {
+		if globalError(network.trainingData, settings) < settings.MaxError {
+			break
+		}
+	}
 
 	return epoch
+}
+
+func (network *Network) feedForward(inputs []float64) {
+	//TODO
 }
