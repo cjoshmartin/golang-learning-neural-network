@@ -33,7 +33,7 @@ Function isAboveLine returns 1 if the point (x,y)
  is above the line y = ax + b, else 0. This is
  our teacher’s solution manual.
 */
-func IsAboveLine(point []int32, f func(int32) int32) int32 {
+func IsAboveLine(point []int32, f func(int32) int32) float64 {
 	x := point[0]
 	y := point[1]
 	fx := f(x)
