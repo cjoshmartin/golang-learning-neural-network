@@ -2,3 +2,5 @@
 \.vscode/
 
 perceptron/applied-go-perceptrons/\.idea/
+
+perceptron/logic_gates/not_gate/\.idea/
